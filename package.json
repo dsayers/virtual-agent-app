@@ -1,0 +1,30 @@
+{
+  "name": "Sampe_Virtual_Agent",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@watson-virtual-agent/chat-widget": "1.2.0",
+    "body-parser": "^1.15.2",
+    "botkit": "^0.2.2",
+    "browserify": "^13.1.0",
+    "cfenv": "1.0.x",
+    "cloudant": "^1.5.0",
+    "domready": "^1.0.8",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "mongodb": "^2.2.10",
+    "request": "^2.75.0",
+    "socket.io": "^1.4.8"
+  },
+  "repository": {},
+  "engines": {
+    "node": "4.x"
+  },
+  "devDependencies": {
+    "mongoose": "^4.6.1"
+  }
+}
