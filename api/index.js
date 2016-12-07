@@ -53,6 +53,63 @@ module.exports = function(app, io) {
 		})
 	});
 
+	//update CRM address
+	app.post('/updateCrmAddress/:cust_id/:email/:address_type', function(req, res) {
+		console.log('CRM Address POST request from cust_id: ' + req.params.cust_id + ' cust_email: ' + req.params.email + ' address_type: ' + req.params.address_type);
+		var payload = new Object();
+		if (req.params.address_type == 'Billing') {
+			payload.billing_address = req.body;
+		} else if (req.params.address_type == 'Mailing') {
+			payload.mailing_address = req.body;
+		}
+		var http = require("http");
+		var options = {
+			host: 'wow-crm-plus-1.mybluemix.net',
+			path: '/sync?cust_id=' + req.params.cust_id + '&cust_email=' + req.params.email + '&address_type=' + req.params.address_type,
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		};
+		var crm_req = http.request(options, function (res) {
+			var responseString = "";
+			res.on("data", function (data) {
+				responseString += data;
+			});
+			res.on("end", function () {
+				console.log(responseString); 
+			});
+		});
+		crm_req.write(JSON.stringify(payload, null, ' '));
+		crm_req.end();
+		res.send(req.body);
+	});
+
+	//get CRM address
+	app.get('/getCrmAddress/:cust_id/:email', function(req, res) {
+		console.log('CRM Address GET request from cust_id: ' + req.params.cust_id + ' cust_email: ' + req.params.email);
+		var http = require("http");
+		var options = {
+			host: 'wow-crm-plus-1.mybluemix.net',
+			path: '/profile?cust_id=' + req.params.cust_id + '&cust_email=' + req.params.email,
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		};
+		var crm_req = http.request(options, function (crm_res) {
+			var responseString = "";
+			crm_res.on("data", function (data) {
+				responseString += data;
+			});
+			crm_res.on("end", function () {
+				console.log(responseString);
+				res.send(responseString);
+			});
+		});
+		crm_req.end();
+	});
+
 	//Post message to Slack
 	app.post('/slack', function(req, res) {
 		console.log('Message from slack!');

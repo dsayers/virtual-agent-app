@@ -172,9 +172,9 @@ IBMChat.registerLayout('payBalance', layoutInit);
 IBMChat.init({
   el: 'ibm_el',
   baseURL: 'https://api.ibm.com/virtualagent/run/api/v1/',
-  botID: '822e32de-504f-49f9-af0d-40b04c89d8b5',
-  XIBMClientID: '7d701529-1779-4df3-9919-fe0770e7ffdd',
-  XIBMClientSecret: 'A8yU1kH6jI1oY6vL5sS8sD4xH1gO1iX0wR2jE6qV1jB6oT8rC5',
+  botID: '91c32f1f-e1b5-4271-b19b-678149c64a92',
+  XIBMClientID: 'ebef051b-979d-4fb8-9342-16472d360a12',
+  XIBMClientSecret: 'uA1rO5dD2tP5xW6sT7yF2dE4mS2aG8dU1mU4sG0oD0rX6hY8cU',
   styles: {
     background: '#f1f1f1',
     accentBackground: '#9c27b0', // The bars on the side of the text and under "Enter message"
@@ -188,12 +188,7 @@ IBMChat.init({
   }
 }).then(function(){
   IBMChat.profile.set('uuid', guid()); //Set temporary uuid for current session
-  var record = generateSampleRecord(); //Generate sample record
-  setUserProfile(record); //Set the current user profile so that it can be used for currents session
-
-  //Post the record to database
-  httpPostAsync('/postRecord/' + IBMChat.profile.get('uuid'), record, function(response) {
-  });
+  IBMChat.profile.set('bill_amount', (100).toString());
 });
 
 // Listen for post messages from Slack for its outgoing messages
@@ -236,15 +231,57 @@ IBMChat.subscribe('action:getUserProfileVariables', function(data) {
   IBMChat.sendSilently('success');
 });
 
+// Retrieve the address from the 'crm' application
+IBMChat.subscribe('action:getCrmAddresses', function(data) {
+  httpGetAsync('/getCrmAddress/' + window.document.getElementById("account-user-id").value + '/' + window.document.getElementById("account-user-email").value, function(response) {
+    var crm_addresses = JSON.parse(response);
+    IBMChat.profile.set('billing_address_line_1', crm_addresses.billing_address.address_line_1);
+    IBMChat.profile.set('billing_address_line_2', crm_addresses.billing_address.address_line_2);
+    IBMChat.profile.set('billing_city', crm_addresses.billing_address.city);
+    IBMChat.profile.set('billing_state', crm_addresses.billing_address.state);
+    IBMChat.profile.set('billing_zip', crm_addresses.billing_address.zip);
+    IBMChat.profile.set('mailing_address_line_1', crm_addresses.mailing_address.address_line_1);
+    IBMChat.profile.set('mailing_address_line_2', crm_addresses.mailing_address.address_line_2);
+    IBMChat.profile.set('mailing_city', crm_addresses.mailing_address.city);
+    IBMChat.profile.set('mailing_state', crm_addresses.mailing_address.state);
+    IBMChat.profile.set('mailing_zip', crm_addresses.mailing_address.zip);
+    IBMChat.sendSilently('success');
+  });
+});
+
 /*** Subscription method used by IBM Content ***/
 // Update the address in the database when updateAddress intent is triggered
 IBMChat.subscribe('action:updateAddress', function(data) {
   var address = getUserProfile();
-  httpPostAsync('/updateRecord/' + IBMChat.profile.get('uuid'), address, function(err, response) {
-    if (err) IBMChat.receive('There was an error updating the address.');
+  var crm_address = {
+    address_line_1: address.user_street_address1,
+    address_line_2: address.user_street_address2,
+    city:  address.user_locality,
+    state: address.user_state_or_province,
+    zip: address.user_zipcode
+  };
+  var address_type = data.message.action.value;
+  IBMChat.profile.set('address_type', address_type)
+  httpPostAsync('/updateCrmAddress/' + window.document.getElementById("account-user-id").value + '/' + window.document.getElementById("account-user-email").value + '/' + address_type, crm_address, function(response) {
+//		IBMChat.sendSilently('success');
   });
 });
 
+function getCrmAddressProfile() {
+	var crm_address = {
+    billing_address_line_1: IBMChat.profile.get('billing_address_line_1'),
+    billing_address_line_2: IBMChat.profile.get('billing_address_line_2'),
+    billing_city: IBMChat.profile.get('billing_city'),
+    billing_state: IBMChat.profile.get('billing_state'),
+    billing_zip: IBMChat.profile.get('billing_zip'),
+    mailing_address_line_1: IBMChat.profile.get('mailing_address_line_1'),
+    mailing_address_line_2: IBMChat.profile.get('mailing_address_line_2'),
+    mailing_city: IBMChat.profile.get('mailing_city'),
+    mailing_state: IBMChat.profile.get('mailing_state'),
+    mailing_zip: IBMChat.profile.get('mailing_zip')
+  };
+  return crm_address;
+}
 
 /*** Subscription method used by custom workspace ***/
 // Pay the bill and update account balance in database when payBillAmount intent is detected
