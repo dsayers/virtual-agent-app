@@ -5,6 +5,10 @@
 ##### Register for Watson Virtual Agent 
 If you haven't already, you must register for a trial of [IBM® Watson™ Virtual Agent] (http://www.ibm.com/watson/developercloud/doc/virtual-agent/wva_getstart.shtml) in order to have access to the IBM® Watson™ Virtual Agent Chat Widget.
 
+##### Deploy to Bluemix 
+<p><a href="https://bluemix.net/deploy?repository=https://github.com/dsayers/virtual-agent-app.git"><img src="https://camo.githubusercontent.com/46f2f9aa54a26e36a277d9706cf9432297817d65/68747470733a2f2f626c75656d69782e6e65742f6465706c6f792f627574746f6e2e706e67" alt="Deploy to Bluemix" data-canonical-src="https://bluemix.net/deploy/button.png" style="max-width:100%;"></a></p></li>
+<li><p>Once you fill in the necessary fields, click <strong>DEPLOY</strong> to start the deployment.</p></li>
+</ol>
 ------------------------------------------
 
 ## Getting started
