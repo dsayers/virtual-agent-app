@@ -10430,7 +10430,7 @@ IBMChat.init({
   }
 }).then(function(){
   IBMChat.profile.set('uuid', guid()); //Set temporary uuid for current session
-  IBMChat.profile.set('bill_amount', (100).toString());
+  IBMChat.profile.set('bill_amount', (50).toString());
 });
 
 // Listen for post messages from Slack for its outgoing messages
@@ -10542,10 +10542,10 @@ function payAmount(billAmount) {
     var billAmountInt = parseInt(billAmount);
     IBMChat.profile.set('bill_amount', (bill-billAmountInt).toString());
   }
-  var record = getUserProfile();
-  httpPostAsync('/updateRecord/' + IBMChat.profile.get('uuid'), record, function(err, response) {
-    if (err) IBMChat.receive('There was an error updating the bill.');
-  });
+//var record = getUserProfile();
+//httpPostAsync('/updateRecord/' + IBMChat.profile.get('uuid'), record, function(err, response) {
+//  if (err) IBMChat.receive('There was an error updating the bill.');
+//});
 
 }
 
