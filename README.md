@@ -1,21 +1,36 @@
 # IBM Watson Virtual Agent Chat Widget
 
+## Introduction
+
+This application demonstrates the capabilities of the [IBM® Watson™ Virtual Agent] and, in particular, shows how WVA can be customized and integrated with external systems.  Tech sellers will find this to be a compelling intial demo to either line of business or technical audiences. Though it can be deployed and run locally on a laptop, deploying this demo on [IBM® Bluemix™] offers several significant conveniences. This README file gives instructions for deploying this application on Bluemix.
+
+This application is a derivative work of [this application] (https://github.ibm.com/watson-engagement-advisor/virtual-agent-app). An enhanced 'update address' scenario was added.
+
+------------------------------------------
+
 ## Prerequisites
 
 ##### Register for Watson Virtual Agent 
 If you haven't already, you must register for a trial of [IBM® Watson™ Virtual Agent] (http://www.ibm.com/watson/developercloud/doc/virtual-agent/wva_getstart.shtml) in order to have access to the IBM® Watson™ Virtual Agent Chat Widget.
 
-##### Deploy to Bluemix 
-<p><a href="https://bluemix.net/deploy?repository=https://github.com/dsayers/virtual-agent-app.git"><img src="https://camo.githubusercontent.com/46f2f9aa54a26e36a277d9706cf9432297817d65/68747470733a2f2f626c75656d69782e6e65742f6465706c6f792f627574746f6e2e706e67" alt="Deploy to Bluemix" data-canonical-src="https://bluemix.net/deploy/button.png" style="max-width:100%;"></a></p></li>
-<li><p>Once you fill in the necessary fields, click <strong>DEPLOY</strong> to start the deployment.</p></li>
-</ol>
+##### Set Up an Account for Bluemix
+Use an existing one or create an account for [IBM® Bluemix™] (https://apps.admin.ibmcloud.com/manage/trial/bluemix.html?cm_mmc=WatsonDeveloperCloud-_-LandingSiteGetStarted-_-x-_-CreateAnAccountOnBluemixCLI). Your account must have available space for at least 1 app.
+    
+##### Node
+Install [**Node 6.x or higher**] (https://nodejs.org/en/) if you don't already have it. You will use this when configuring the demo to point to your own WVA and Slack channel.
+
+##### Cloud Foundry Command Line Interface
+Install [**Cloud Foundry CLI**] (https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) if you don't already have it.  You will use this to push your configured demo to Bluemix.
+
 ------------------------------------------
 
 ## Getting started
 
 1. Clone this repository.
     1. If you don't already have Git installed, install [Git] (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-    2. Then run this command in your terminal: ```git clone git@github.ibm.com:watson-engagement-advisor/virtual-agent-app.git```
+    2. Open a GIT shell window
+    3. Navigate to or create a directory where you want to unpack the repository files, e.g. ```/virtual-agent-app```
+    4. Then run this command in your terminal: ```git clone https://github.com/dsayers/virtual-agent-app.git```
 2. Get your API keys. To prove that you have permission to use the Watson Virtual Agent API services as a trial user, the following keys must be associated with any API calls that are made to the service from the virtual agent user interface: Client ID and Client secret token.
     1. Log in to [/api explorer](https://developer.ibm.com/api/) with the same IBM ID that you used to sign up for the trial subscription.
     2. Create a user name, and click **Next**.
@@ -31,40 +46,18 @@ If you haven't already, you must register for a trial of [IBM® Watson™ Virtua
     4. Add '2016-09-16' as the version parameter value, and click **TEST**.
     5. Copy the `bot_id`, the 32-digit alphanumeric code, that is returned in the response and paste it in a text file because you will need it later.
 3. Open `public/js/main.js` in your favorite text editor so that you can paste values for the `botID`, `XIBMClientID`, and `XIBMClientSecret` parameters.
-4. Paste these values into `botID`, `XIBMClientID`, and `XIBMClientSecret` accordingly (lines 153-155).
+4. Find where these bot settings are assigned (lines 175-177) and paste your values for `botID`, `XIBMClientID`, and `XIBMClientSecret` over top the existing values.
 5. Save your changes.
 
 **Important**: Keep the values of the IBMClientID and IBMClientSecret as private as possible.
 
 ------------------------------------------
 
-## Configuring the Make a Payment Demo
-
-In this step, you will invoke a client workspace that has a custom layout that changes how the **Make a Payment** intent interacts. This workspace can be used by multiple individuals at the same time. If you would like to set up and invoke your own workspace, perhaps so you can customize it further, scroll down to **Optional: Configure Your Own Environment** and follow the instructions there.
-
-##### WVA Configure Tool
-1. Navigate to your Watson™ Virtual Agent Configure tool.
-    1. Log in to https://myibm.ibm.com/
-    2. You should see **Products and services** in the center of the page. Click the **LAUNCH** button in the **Watson Virtual Agent Trial** tile.
-    3. This opens a new tab in your browser which is your Watson™ Virtual Agent Configure tool.
-2. In the WVA Configure tool, use the left column to navigate to **Configure**. In here, find and click on the **Make a Payment** intent.
-3. Make sure the intent is set to **On** and then click **Change** under the IBM Content section. Change its **Response Type** to **Invoke client workspace**. Click **Continue**.
-4. Click **Change** for each field and add the credentials accordingly as follows:
-    1. **Conversation Endpoint** to `https://gateway.watsonplatform.net/conversation/api`. Click **Continue**.
-    2. **Username** to `35e17536-dfb1-42fb-98ed-6ee9cc7478c2`. Click **Continue**.
-    3. **Password** to `YWEn16N6VvR1`. Click **Continue**.
-    4. **API Version** to `2016-07-11`. Click **Continue**.
-    5. **Workspace ID** to `d6cd983a-acec-4ad8-bf51-7934a7f09101`. Click **Continue**.
-
-Now the specific client workspace will be invoked when the Make a Payment intent is hit. 
-
-If this is the only demo you wish to configure, scroll down to **Run the App** in this readme file and follow the steps in that section to start the app. Otherwise, continue with the follow section to setup further portions of the demo.
-
-------------------------------------------
-
 ## Configuring the Update Address Demo
 
-In this step, you will invoke a client workspace that has a custom layout that changes how the **Update Address** intent interacts. This workspace can be used by multiple individuals at the same time. If you would like to set up and invoke your own workspace, perhaps so you can customize it further, scroll down to **Optional: Configure Your Own Environment** and follow the instructions there.
+Configuring this customization enables you to show how WVA can integrate with external systems of record. Address updates made using the WVA will also update the user's address in an external "CRM" system. You'll find instructions for how to best show this integration in the separately published demo script. (Include pointer to document or blog posting.)
+
+In this step, you will invoke a client workspace that has a custom layout that changes how the **Update Address** intent interacts. This workspace can be used by multiple individuals at the same time. You can also set up and invoke your own workspace, perhaps so you can customize it further, but those steps are not documented in this README.
 
 ##### WVA Configure Tool
 1. Navigate to your Watson™ Virtual Agent Configure tool.
@@ -82,13 +75,29 @@ In this step, you will invoke a client workspace that has a custom layout that c
 
 Now the specific client workspace will be invoked when the Update Address intent is hit. 
 
-If this is the only demo you wish to configure, scroll down to **Run the App** in this readme file and follow the steps in that section to start the app. Otherwise, continue with the follow section to setup further portions of the demo.
-
 ------------------------------------------
 
-## Configuring the System of Records Integration
+## Configuring the Make a Payment Demo
 
-If you would like to set up your own Cloudant account, scroll down to **Optional: Configure Your Own Environment** and follow the instructions there. A preconfigured, shared database should be fine for demonstration purposes.
+Configuring this customization enables you to show how WVA can change values in external systems of record. As the user makes payments, his balance is updated and persisted in the system of record for his account.
+
+In this step, you will invoke a client workspace that has a custom layout that changes how the **Make a Payment** intent interacts. This workspace can be used by multiple individuals at the same time. You can also set up and invoke your own workspace, perhaps so you can customize it further, but those steps are not documented in this README.
+
+##### WVA Configure Tool
+1. Navigate to your Watson™ Virtual Agent Configure tool.
+    1. Log in to https://myibm.ibm.com/
+    2. You should see **Products and services** in the center of the page. Click the **LAUNCH** button in the **Watson Virtual Agent Trial** tile.
+    3. This opens a new tab in your browser which is your Watson™ Virtual Agent Configure tool.
+2. In the WVA Configure tool, use the left column to navigate to **Configure**. In here, find and click on the **Make a Payment** intent.
+3. Make sure the intent is set to **On** and then click **Change** under the IBM Content section. Change its **Response Type** to **Invoke client workspace**. Click **Continue**.
+4. Click **Change** for each field and add the credentials accordingly as follows:
+    1. **Conversation Endpoint** to `https://gateway.watsonplatform.net/conversation/api`. Click **Continue**.
+    2. **Username** to `e28a8b8e-8ea0-45ae-b5e7-6832216c6d77`. Click **Continue**.
+    3. **Password** to `nBaSsF4eRqxH`. Click **Continue**.
+    4. **API Version** to `2016-07-11`. Click **Continue**.
+    5. **Workspace ID** to `1e59184e-7bf7-4474-ae14-f67e2adfc506`. Click **Continue**.
+
+Now the specific client workspace will be invoked when the Make a Payment intent is hit. 
 
 ------------------------------------------
 
@@ -113,35 +122,43 @@ Outgoing webhooks are used for forwarding messages *from* the Slack channel *to*
 3. Scroll down to 'Integration Settings' and select the **Channel** you want to listen on from the drop down menu. Optionally, you can add trigger words as well.
 4. Copy the **Slack Token** and paste it to the .env file and save. ```SLACK_OUTGOING_TOKEN=<Your token>```
 
-Scroll down to **Run the App** in this readme file and follow the steps in that section to start the app and get the port.
-
-##### Add localtunnel URL to URL(s) field
-We need a public url address to set up the server. You can use [localtunnel](https://localtunnel.github.io/www/) if you are testing locally. To do so, run the following commands in a separate terminal:
-
-1. ```npm install -g localtunnel```
-2. ```lt --port [yourPortNumber]```
-    - Make sure the localtunnel is running on the same port as your express app and running in a separate terminal while you run your app.
-
-3. By default, the endpoint `/slack` is exposed to accept messages from Slack, so your webhook url would look like this: ```http://your.localtunnelurl.me/slack```
-4. Paste your localtunnel URL (i.e. http://your.localtunnelurl.me/slack) to the **URL(s)** field in the **Add Outgoing Webhooks Integration** page from earlier.
-    - You will need to update the outgoing URL whenever you restart the server.
-5. In the **Add Outgoing WebHooks Integration** page, scroll down and click **Save Settings**.
-
-Now you can **Execute to a Human Agent**.
+After you push this application to Bluemix, you will have to do one more thing to complete the configuration of the Escalate to Agent demo.
 
 ------------------------------------------
 
-## Run the App
-1. Install [**Node 6.x or higher**] (https://nodejs.org/en/) if you don't already have it.
-2. Navigate to the corect directory by using the following command within the terminal:
-    1. ```cd ./virtual-agent-app```
-3. When you first set up the app, run the following commands once within the terminal:
+## Prepare the App to be pushed to Bluemix
+1. Get to a command line on your computer (e.g. open a command or terminal window)
+2. Navigate to the directory where you cloned the Git repository:
+    1. e.g. ```cd /virtual-agent-app```, unless you chose a different location
+3. Run the following commands once within the terminal:
     1. ```npm install browserify``` (you may have to use ```npm install -g browserify``` instead if that doesn't work)
     2. ```npm install```
-4. Then, each time you want to run the app, use the following commands within the terminal:
-    1. ```browserify public/js/main.js -o public/js/bundle.js```
-    2. ```node app.js```
-5. Then navigate to the port given in the terminal.
+    3. ```browserify public/js/main.js -o public/js/bundle.js```
+
+------------------------------------------
+
+## Push App to Bluemix
+From the command line while still positioned in the directory where you cloned the Git repository
+
+1. Enter this command subsituting in the user name of the IBM_Id associated with your Bluemix account, usually your e-mail address
+    1 ```cf login -a https://api.ng.bluemix.net -u <your_ibm_id_username>```
+2. Enter your (ibm_id) password when prompted
+3. Select an organization from the list presented. (Note: if you only access to only one organization the system may bypass this step and proceed from the next one.)
+4. Enter this command substituting in the name want to give your application on Bluemix. Remember the URL to reach your deployed app will be: <your_application_name>.mybluemix.net. Because URL's must be unique, you will get a message if the name you've selected is already being used. In that case, re-enter this command with different names until successful.
+    1. ```cf push <your_application_name>```
+5. Look for the message indicating the deployed app is running. (Deployment may take a few minutes.)
+
+------------------------------------------
+
+## Configuring the Escalate to Agent Demo (Part 2)
+##### Update outgoing webhooks
+
+1. Update the new outgoing webhook [integration](https://my.slack.com/services/new/outgoing-webhook) that you just created. (Click the pencil icon next to the appropriate configuration.)
+2. By default, the endpoint `/slack` is exposed to accept messages from Slack, so update your webhook url to look like this: ```http://<your_application_name>.mybluemix.net/slack```
+3. Paste your localtunnel URL (i.e. http://your.localtunnelurl.me/slack) to the **URL(s)** field in the **Add Outgoing Webhooks Integration** page from earlier.
+4. In the **Add Outgoing WebHooks Integration** page, scroll down and click **Save Settings**.
+
+Now you can **Execute to a Human Agent**.
 
 -------------------------------------------
 
@@ -168,88 +185,3 @@ Now you can **Execute to a Human Agent**.
 3. On this page, enter the message, `agent`, into the chat bot (**"Enter message..."**). You then should notice that you will receive a Slack notification that a client (the user asking the chat bot questions in the running app) has executed to a human agent (the user in the Slack channel). 
 4. In Slack, you can then enter a message (remember to include the trigger word(s) at the beginning if you have any) which will then appear in the running app. Thus, a conversation can occur between the client and the human agent. 
 5. To end the conversation between the human agent and client, the human agent in the Slack channel can enter the word, `stop`. This will allow the client to continue to ask any more questions to the chat bot, rather than asking the human agent.
-
-------------------------------------------- 
-
-
--------------------------------------------
-
-## Optional: Configure Your Own Environment
-
-### Invoke Your Custom Workspace
-
-#### Prerequisites
-
-##### Set Up an Account for Bluemix
-
-Create a Bluemix account if you don't have one already.
-    - [Sign up] (https://apps.admin.ibmcloud.com/manage/trial/bluemix.html?cm_mmc=WatsonDeveloperCloud-_-LandingSiteGetStarted-_-x-_-CreateAnAccountOnBluemixCLI) in Bluemix, or use an existing account. Your account must have available space for at least 1 app and 1 service.
-    
-##### Set Up a Conversation Service in Bluemix
-
-If you haven't already create a Conversation Service in Bluemix in order to use a custom layout within your IBM® Watson™ Virtual Agent Chat Widget.
-
-1. In Bluemix, navigate to your Dashboard.
-2. If you do not already have a Conversation Service, or would like to use a separate instance of a Conversation Service for this project, click **USE SERVICES OR APIS**. 
-3. Now find and click the **Conversation** icon. 
-4. You then are brought to a page where you can **create** an instance of the Conversation Service. 
-    1. In the right column of the page, under **App:** you can select **Leave unbound** since your instance of the Conversation Service does not need to be bound to your project. 
-    2. You can make the **Service name** and the **Credential name** anything you prefer (these do not matter). 
-    3. Last, select the **Free** plan of the Conservation service and click **CREATE** to make your instance of the service.
-
-#### Invoke and Set Up Your Custom Workspace
-
-In this step, you will invoke a client workspace that has a custom layout that changes how the **Make a Payment** intent interacts.
-
-##### WVA Configure Tool
-1. Navigate to your Watson™ Virtual Agent Configure tool.
-    1. Log in to https://myibm.ibm.com/ and navigate to **Products and services**.
-    2. This brings you to a new page. In this page, click the **LAUNCH** button in the **Watson Virtual Agent Trial** tile.
-    3. This opens a new tab in your browser which is your Watson™ Virtual Agent Configure tool.
-2. In the WVA Configure tool, use the left column to navigate to **Configure**. In here, find and click on the **Make a Payment** intent.
-3. Make sure the intent is set to **On** and then click **Change** and change its **Response Type** to **Invoke client workspace**. Click **Continue**.
-4. Change the following inputs using the more explicit directions below in **Create Custom Conversation Workspace**:
-    1. **Conversation Endpoint**
-    2. **Username**
-    3. **Password**
-    4. **API Version**
-    5. **Workspace ID**
-
-##### Create Custom Conversation Workspace
-1. If you do not already have an instance of Conversation Service, scroll above to **Prerequisites** in this readme to get directions to do so.
-2. In Bluemix, navigate to the Dashboard and click the instance of Conversation Service you want to use for this project.
-3. This brings you to a new page. In this page, click the **Service Credentials** menu item. Copy these items into the configure tool under the **Make a Payment** intent:
-    1. In your WVA Configure tool, click **Change** and change the **Conversation Endpoint** configure input to the **url** Conversation Service credential. Click **Continue**.
-    2. In your WVA Configure tool, click **Change** and change the **Username** configure input to the **username** Conversation Service credential. Click **Continue**.
-    3. In your WVA Configure tool, click **Change** and change the **Password** configure input to the **password** Conversation Service credential. Click **Continue**.
-4. In your WVA Configure tool, click **Change** and change the **API Version** configure input to the **current version** found in http://www.ibm.com/watson/developercloud/conversation/api/v1/#authentication. Click **Continue**.
-5. Back in the page where your Conversation Service credentials are located, click the **Manage** menu item in the left column and select **Launch Tooling**. This opens a new tab in your browser, where you are prompted to login if you have not done so before. Use your Bluemix credentials.
-4. Click the import workspace button. Click **Choose a file** (or drag and drop) and select the JSON file (*wow_make_a_payment.json*) under **workspaces** in your project. Choose to **import Everything(Intents, Entities, and Dialog)**. Then select **Import** to finish importing the workspace.
-5. Refresh your browser. A new workspace tile is created within the tooling. Select the menu button within the workspace tile, then select **View details**:
-6. In the Details UI, copy the 36 character UNID **ID** field. This is the **Workspace ID**.
-7. In your WVA Configure tool, click **Change** and change the **Workspace ID** configure input to the Workspace ID of your Conversation workspace (that you found in the previous step). Click **Continue**.
-
-Now your client workspace has been invoked.
-
-##### Results
-Scroll to **Run the App** in this readme file and follow the steps in that section to start the app.
-To see how the custom layout works within your app do the following:
-
-1. In your running app (*the Telco demo webpage you are running locally*), navigate to **Support** and then to **Talk to Watson**. 
-2. On this page, enter the message, `make a payment` or `pay`, into the chat bot (**"Enter message..."**).
-3. You will then see a response of buttons (if you have a balance of more than $0 in the system of records). This is the custom layout that you added by invoking the client workspace.
-
-
-### Set up a Cloudant account
-
-1. Sign into your Cloudant Account.
-    - If you don't already have one then, you can [Sign up] (https://cloudant.com/sign-up/) for Cloudant.
-2. Create a database in your cloudant dashboard. You can do so by clicking on **Create Database** button the top right corner of your dashboard. 
-3. Add your cloudant username, password and database name to the .env file located in the project folder
-
-Scroll to **Run the App** in this readme file and follow the steps in that section to start the app.
-
-
-
-
-
