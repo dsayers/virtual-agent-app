@@ -2,9 +2,9 @@
 
 ## Introduction
 
-This application demonstrates the capabilities of the [IBM® Watson™ Virtual Agent] and, in particular, shows how WVA can be customized and integrated with external systems.  Tech sellers will find this to be a compelling intial demo to either line of business or technical audiences. Though it can be deployed and run locally on a laptop, deploying this demo on [IBM® Bluemix™] offers several significant conveniences. This README file gives instructions for deploying this application on Bluemix.
+This application demonstrates the capabilities of the IBM® Watson™ Virtual Agent showing, in particular, how WVA can be customized and integrated with external systems.  Although it can also be deployed and run locally on a laptop, this README file gives instructions for deploying this application into IBM® Bluemix™.
 
-This application is a derivative work of [this application] (https://github.ibm.com/watson-engagement-advisor/virtual-agent-app). An enhanced 'update address' scenario was added.
+This application is small extension to [another application] (https://github.ibm.com/watson-engagement-advisor/virtual-agent-app) adding an enhanced 'update address' scenario that synchronizes address information with an external, crm-like application.
 
 ------------------------------------------
 
@@ -17,7 +17,7 @@ If you haven't already, you must register for a trial of [IBM® Watson™ Virtua
 Use an existing one or create an account for [IBM® Bluemix™] (https://apps.admin.ibmcloud.com/manage/trial/bluemix.html?cm_mmc=WatsonDeveloperCloud-_-LandingSiteGetStarted-_-x-_-CreateAnAccountOnBluemixCLI). Your account must have available space for at least 1 app.
     
 ##### Node
-Install [**Node 6.x or higher**] (https://nodejs.org/en/) if you don't already have it. You will use this when configuring the demo to point to your own WVA and Slack channel.
+Install [**Node 6.x or higher**] (https://nodejs.org/en/) if you don't already have it. You will use this when you are preparing your app for the push to Bluemix.
 
 ##### Cloud Foundry Command Line Interface
 Install [**Cloud Foundry CLI**] (https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) if you don't already have it.  You will use this to push your configured demo to Bluemix.
@@ -27,10 +27,9 @@ Install [**Cloud Foundry CLI**] (https://docs.cloudfoundry.org/cf-cli/install-go
 ## Getting started
 
 1. Clone this repository.
-    1. If you don't already have Git installed, install [Git] (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-    2. Open a GIT shell window
-    3. Navigate to or create a directory where you want to unpack the repository files, e.g. ```/virtual-agent-app```
-    4. Then run this command in your terminal: ```git clone https://github.com/dsayers/virtual-agent-app.git```
+    1. Click the ```Clone or download``` button on this GitHub repository page and ```Download Zip```
+    2. Navigate to or create a directory where you want to unzip the repository files, e.g. ```/virtual-agent-app```
+    3. Extract the zip archive in the directory
 2. Get your API keys. To prove that you have permission to use the Watson Virtual Agent API services as a trial user, the following keys must be associated with any API calls that are made to the service from the virtual agent user interface: Client ID and Client secret token.
     1. Log in to [/api explorer](https://developer.ibm.com/api/) with the same IBM ID that you used to sign up for the trial subscription.
     2. Create a user name, and click **Next**.
@@ -46,7 +45,7 @@ Install [**Cloud Foundry CLI**] (https://docs.cloudfoundry.org/cf-cli/install-go
     4. Add '2016-09-16' as the version parameter value, and click **TEST**.
     5. Copy the `bot_id`, the 32-digit alphanumeric code, that is returned in the response and paste it in a text file because you will need it later.
 3. Open `public/js/main.js` in your favorite text editor so that you can paste values for the `botID`, `XIBMClientID`, and `XIBMClientSecret` parameters.
-4. Find where these bot settings are assigned (lines 175-177) and paste your values for `botID`, `XIBMClientID`, and `XIBMClientSecret` over top the existing values.
+4. Find where these bot settings are assigned (lines 175-177) and paste your values for `botID`, `XIBMClientID`, and `XIBMClientSecret` over top of the existing values.
 5. Save your changes.
 
 **Important**: Keep the values of the IBMClientID and IBMClientSecret as private as possible.
@@ -55,9 +54,9 @@ Install [**Cloud Foundry CLI**] (https://docs.cloudfoundry.org/cf-cli/install-go
 
 ## Configuring the Update Address Demo
 
-Configuring this customization enables you to show how WVA can integrate with external systems of record. Address updates made using the WVA will also update the user's address in an external "CRM" system. You'll find instructions for how to best show this integration in the separately published demo script. (Include pointer to document or blog posting.)
+By configuring the Update Address demo, you can show how WVA integrates with external systems of record. Once configured, WVA will synchronize all address updates with an external "CRM" system. A full demo script providing instructions for how you can best show this integration will be published separately and a pointer will be included here when that's available.
 
-In this step, you will invoke a client workspace that has a custom layout that changes how the **Update Address** intent interacts. This workspace can be used by multiple individuals at the same time. You can also set up and invoke your own workspace, perhaps so you can customize it further, but those steps are not documented in this README.
+In this step, you will invoke a client workspace that has a custom layout that changes how the **Update Address** intent interacts. This workspace can be used by multiple individuals at the same time. You can also set up and invoke your own workspace, perhaps so you can customize it further. However, those steps are not documented in this README.
 
 ##### WVA Configure Tool
 1. Navigate to your Watson™ Virtual Agent Configure tool.
@@ -102,13 +101,13 @@ Now the specific client workspace will be invoked when the Make a Payment intent
 ------------------------------------------
 
 ## Configuring the Escalate to Agent Demo
+
 ##### Slack Setup
 1. Create a [Slack Team] (https://get.slack.help/hc/en-us/articles/206845317-Create-a-Slack-team).
     - You must be an admin in your Slack team to set up Slack integration for your team.
 
 ##### Add incoming webhooks
 Incoming webhooks are used for forwarding messages *from* the chat widget *to* the Slack channel. Here are the steps to set it up.
-
 1. Add a new incoming webhook [integeration](https://my.slack.com/services/new/incoming-webhook/) to your team.
 2. Choose a channel from the drop down list to where the bot will post messages and click **Add Incoming WebHooks Integration** button
 3. Copy the **Webhook URL** and paste it to your .env file and save. ```SLACK_INCOMING_WEBHOOK=<Your webhook>```
@@ -116,7 +115,6 @@ Incoming webhooks are used for forwarding messages *from* the chat widget *to* t
 
 ##### Add outgoing webhooks
 Outgoing webhooks are used for forwarding messages *from* the Slack channel *to* the chat widget.
-
 1. Add a new outgoing webhook [integration](https://my.slack.com/services/new/outgoing-webhook) to your team.
 2. Click **Add Outgoing Webhooks Integration**
 3. Scroll down to 'Integration Settings' and select the **Channel** you want to listen on from the drop down menu. Optionally, you can add trigger words as well.
@@ -126,20 +124,21 @@ After you push this application to Bluemix, you will have to do one more thing t
 
 ------------------------------------------
 
-## Prepare the App to be pushed to Bluemix
+## Preparing the App to be pushed to Bluemix
+
 1. Get to a command line on your computer (e.g. open a command or terminal window)
-2. Navigate to the directory where you cloned the Git repository:
+2. Navigate to the directory where you extracted the Zip file containing the Git repository:
     1. e.g. ```cd /virtual-agent-app```, unless you chose a different location
-3. Run the following commands once within the terminal:
+3. Run the following commands from the command line:
     1. ```npm install browserify``` (you may have to use ```npm install -g browserify``` instead if that doesn't work)
     2. ```npm install```
     3. ```browserify public/js/main.js -o public/js/bundle.js```
 
 ------------------------------------------
 
-## Push App to Bluemix
-From the command line while still positioned in the directory where you cloned the Git repository
+## Pushing the App to Bluemix
 
+From the command line while still positioned in the directory where you cloned the Git repository
 1. Enter this command subsituting in the user name of the IBM_Id associated with your Bluemix account, usually your e-mail address
     1 ```cf login -a https://api.ng.bluemix.net -u <your_ibm_id_username>```
 2. Enter your (ibm_id) password when prompted
@@ -151,8 +150,8 @@ From the command line while still positioned in the directory where you cloned t
 ------------------------------------------
 
 ## Configuring the Escalate to Agent Demo (Part 2)
-##### Update outgoing webhooks
 
+##### Update outgoing webhooks
 1. Update the new outgoing webhook [integration](https://my.slack.com/services/new/outgoing-webhook) that you just created. (Click the pencil icon next to the appropriate configuration.)
 2. By default, the endpoint `/slack` is exposed to accept messages from Slack, so update your webhook url to look like this: ```http://<your_application_name>.mybluemix.net/slack```
 3. Paste your localtunnel URL (i.e. http://your.localtunnelurl.me/slack) to the **URL(s)** field in the **Add Outgoing Webhooks Integration** page from earlier.
